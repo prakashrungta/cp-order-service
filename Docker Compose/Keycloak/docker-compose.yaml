@@ -1,35 +1,45 @@
-version: '2.2'
+version: '3.7'
+
 services:
-  mysql:
-    image: mysql:5.7
+  postgres:
+    image: postgres:16.2
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - keycloak_network
+
   keycloak:
-    image: quay.io/keycloak/keycloak:17.0.1
+    image: quay.io/keycloak/keycloak:23.0.6
+    command: start
     environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin123
-      KEYCLOAK_LOGLEVEL: INFO
-      ROOT_LOGLEVEL: INFO
-      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/tls.crt
-      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/tls.key
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "8443:8443"
-    volumes:
-      - "./keycloak/certs/tls.crt:/opt/keycloak/conf/tls.crt"
-      - "./keycloak/certs/tls.key:/opt/keycloak/conf/tls.key"
-    command:
-      - start-dev
-      - --features admin-fine-grained-authz
+      - 8080:8080
+    restart: always
     depends_on:
-      - mysql
+      - postgres
+    networks:
+      - keycloak_network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  keycloak_network:
+    driver: bridge
