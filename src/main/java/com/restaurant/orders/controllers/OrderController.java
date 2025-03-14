@@ -20,13 +20,13 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('admin')")
     public Order createOrder(@RequestBody Order order) {
         return orderService.saveOrder(order);
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('user')")
     public List<Order> getOrders() {
         return orderService.getAllOrders();
     }

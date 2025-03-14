@@ -1,51 +1,46 @@
 package com.restaurant.orders.security;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimNames;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class KeycloakJwtTokenConverter implements Converter<Jwt, JwtAuthenticationToken> {
+public class KeycloakJwtTokenConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
-    private static final String RESOURCE_ACCESS = "resource_access";
-    private static final String ROLES = "roles";
-    private static final String ROLE_PREFIX = "ROLE_";
-    private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
-    private final TokenConverterProperties properties;
-
-    public KeycloakJwtTokenConverter(
-            JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
-            TokenConverterProperties properties) {
-        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
-        this.properties = properties;
-    }
+    private final JwtGrantedAuthoritiesConverter defaultGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
 
     @Override
-    public JwtAuthenticationToken convert(@NonNull Jwt jwt) {
-        Stream<SimpleGrantedAuthority> accesses = Optional.of(jwt)
-                .map(token -> token.getClaimAsMap(RESOURCE_ACCESS))
-                .map(claimMap -> (Map<String, Object>) claimMap.get(properties.getResourceId()))
-                .map(resourceData -> (Collection<String>) resourceData.get(ROLES))
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role))
-                .distinct();
+    public Collection<GrantedAuthority> convert(Jwt jwt) {
+        Collection<GrantedAuthority> authorities = defaultGrantedAuthoritiesConverter.convert(jwt);
 
-        Set<GrantedAuthority> authorities = Stream
-                .concat(jwtGrantedAuthoritiesConverter.convert(jwt).stream(), accesses)
-                .collect(Collectors.toSet());
+        // Extract roles from realm_access
+        List<String> realmRoles = jwt.getClaimAsStringList("realm_access.roles");
+        if (realmRoles != null) {
+            authorities.addAll(realmRoles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .collect(Collectors.toList()));
+        }
 
-        String principalClaimName = properties.getPrincipalAttribute()
-                .map(jwt::getClaimAsString)
-                .orElse(jwt.getClaimAsString(JwtClaimNames.SUB));
+        // Extract roles from resource_access
+        Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
+        if (resourceAccess != null) {
+            resourceAccess.forEach((resource, access) -> {
+                Map<String, List<String>> accessMap = (Map<String, List<String>>) access;
+                List<String> resourceRoles = accessMap.get("roles");
+                if (resourceRoles != null) {
+                    authorities.addAll(resourceRoles.stream()
+                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                            .collect(Collectors.toList()));
+                }
+            });
+        }
 
-        return new JwtAuthenticationToken(jwt, authorities, principalClaimName);
+        return authorities;
     }
 }

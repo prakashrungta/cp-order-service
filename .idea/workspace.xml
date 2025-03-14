@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47b844af-022f-44e4-8747-b9b246ea6b80" name="Changes" comment="Added for correct build">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/controllers/OrderController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/entities/Order.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/repository/OrderRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/GlobalSecurityConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/KeycloakJwtTokenConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/TokenConverterProperties.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker Compose/Keycloak/.env" beforeDir="false" afterPath="$PROJECT_DIR$/Docker Compose/Key Cloak/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker Compose/Keycloak/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/Docker Compose/Key Cloak/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/cp_order_service/CpOrderServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/CpOrderServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/restaurant/orders/cp_order_service/CpOrderServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/restaurant/orders/CpOrderServiceApplicationTests.java" afterDir="false" />
+    <list default="true" id="47b844af-022f-44e4-8747-b9b246ea6b80" name="Changes" comment="Added Keycloak">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/controllers/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/controllers/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/GlobalSecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/KeycloakJwtTokenConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/KeycloakJwtTokenConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,11 +154,28 @@
       <option name="project" value="LOCAL" />
       <updated>1741923529991</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added Keycloak">
+      <option name="closed" value="true" />
+      <created>1741939565006</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1741939565006</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added Keycloak">
+      <option name="closed" value="true" />
+      <created>1741939605730</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741939605730</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added for correct build" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added for correct build" />
+    <MESSAGE value="Added Keycloak" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Keycloak" />
   </component>
 </project>
