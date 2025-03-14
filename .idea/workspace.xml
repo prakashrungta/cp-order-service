@@ -4,12 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47b844af-022f-44e4-8747-b9b246ea6b80" name="Changes" comment="Added Keycloak">
+    <list default="true" id="47b844af-022f-44e4-8747-b9b246ea6b80" name="Changes" comment="Added Keycloak preauthorize">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/config/SwaggerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/restaurant/orders/controllers/OrderControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/controllers/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/controllers/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/GlobalSecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/entities/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/entities/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/repositories/OrderRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/KeycloakJwtTokenConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/KeycloakJwtTokenConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/TokenConverterProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/security/TokenConverterProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/restaurant/orders/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,12 +60,18 @@
     "Application.CpOrderServiceApplication.executor": "Run",
     "Docker.Key Cloak/docker-compose.yaml: Compose Deployment.executor": "Run",
     "Docker.Postgress/docker-compose.yaml: Compose Deployment.executor": "Run",
+    "JUnit.OrderControllerTest.executor": "Run",
+    "JUnit.OrderControllerTest.testCreateOrder.executor": "Run",
+    "JUnit.OrderControllerTest.testCreateOrderNegativePrice.executor": "Run",
+    "JUnit.OrderServiceTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -64,7 +79,7 @@
       <recent name="com.restaurant.orders.security" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CpOrderServiceApplication">
+  <component name="RunManager" selected="JUnit.OrderControllerTest.testCreateOrderNegativePrice">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -110,6 +125,68 @@
         <option name="RunConfigurationTask" enabled="true" run_configuration_name="Key Cloak/docker-compose.yaml: Compose Deployment" run_configuration_type="docker-deploy" />
       </method>
     </configuration>
+    <configuration name="OrderControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cp-order-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.restaurant.orders.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.restaurant.orders.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.restaurant.orders.controllers.OrderControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderControllerTest.testCreateOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cp-order-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.restaurant.orders.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.restaurant.orders.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.restaurant.orders.controllers.OrderControllerTest" />
+      <option name="METHOD_NAME" value="testCreateOrder" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderControllerTest.testCreateOrderNegativePrice" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cp-order-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.restaurant.orders.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.restaurant.orders.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.restaurant.orders.controllers.OrderControllerTest" />
+      <option name="METHOD_NAME" value="testCreateOrderNegativePrice" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="cp-order-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.restaurant.orders.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.restaurant.orders.service" />
+      <option name="MAIN_CLASS_NAME" value="com.restaurant.orders.service.OrderServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Key Cloak/docker-compose.yaml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -130,10 +207,18 @@
       <item itemvalue="Application.CpOrderServiceApplication" />
       <item itemvalue="Docker.Key Cloak/docker-compose.yaml: Compose Deployment" />
       <item itemvalue="Docker.Postgress/docker-compose.yaml: Compose Deployment" />
+      <item itemvalue="JUnit.OrderControllerTest" />
+      <item itemvalue="JUnit.OrderControllerTest.testCreateOrder" />
+      <item itemvalue="JUnit.OrderControllerTest.testCreateOrderNegativePrice" />
+      <item itemvalue="JUnit.OrderServiceTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.OrderControllerTest.testCreateOrderNegativePrice" />
+        <item itemvalue="JUnit.OrderControllerTest.testCreateOrder" />
         <item itemvalue="Application.CpOrderServiceApplication" />
+        <item itemvalue="JUnit.OrderControllerTest" />
+        <item itemvalue="JUnit.OrderServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -170,12 +255,21 @@
       <option name="project" value="LOCAL" />
       <updated>1741939605730</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added Keycloak preauthorize">
+      <option name="closed" value="true" />
+      <created>1741946087241</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741946087241</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added for correct build" />
     <MESSAGE value="Added Keycloak" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Keycloak" />
+    <MESSAGE value="Added Keycloak preauthorize" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Keycloak preauthorize" />
   </component>
 </project>
