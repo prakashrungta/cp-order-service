@@ -1,4 +1,4 @@
-package com.restaurant.orders.cp_order_service;
+package com.restaurant.orders;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
