@@ -36,11 +36,11 @@ logging:
     org.springframework.security: DEBUG
     org.keycloak: DEBUG
 
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
+#springdoc:
+#  api-docs:
+#    path: /v3/api-docs
+#  swagger-ui:
+#    path: /swagger-ui.html
 
 server:
   port: 8081

@@ -44,15 +44,15 @@ public class OrderControllerTest {
         Order order = new Order();
         order.setId(1L);
         order.setDescription("this is a test order");
-        order.setPrice(0.0);
+        order.setPrice(0.1);
         // Set the name field
         when(orderService.saveOrder(any(Order.class))).thenReturn(order);
 
         mockMvc.perform(post("/api/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"description\":\"this is a test order\",\"price\":0.0}"))
+                        .content("{\"descr\":\"this is a test order\",\"price\":0.1}"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"id\":1,\"description\":\"this is a test order\",\"price\":0.0}"));
+                .andExpect(content().json("{\"id\":1,\"description\":\"this is a test order\",\"price\":0.1}"));
     }
 
     @Test
