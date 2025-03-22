@@ -51,8 +51,8 @@ public class KeycloakTokenService {
     }
 
     public void refreshServiceAccessToken() {
-    System.out.println("Refreshing the Token in Actual ");
         if (Instant.now().isAfter(tokenExpiryTime.minusSeconds(30))) {
+            System.out.println("Refreshing the Token in Actual ");
             requestNewToken();
         }
     }
