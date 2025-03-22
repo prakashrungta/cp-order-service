@@ -17,8 +17,6 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    @Autowired
-    private RestClient restClient;
 
     /**
      * Constructs an OrderService with the specified OrderRepository.
@@ -46,7 +44,7 @@ public class OrderService {
      * @return the saved order
      */
     public Order saveOrder(Order order) {
-        restClient.callPaymentService();
+
         return orderRepository.save(order);
     }
 }

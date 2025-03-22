@@ -17,10 +17,10 @@ public class RestClient {
         this.keycloakTokenService = keycloakTokenService;
     }
 
-    public String callPaymentService() {
+    public String callPaymentService( Long orderId) {
         String accessToken = keycloakTokenService.getServiceAccessToken(); // Get token
 
-        Integer orderId = 123; // Replace with actual order ID
+       ; // Replace with actual order ID
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("amount", "44");
 
