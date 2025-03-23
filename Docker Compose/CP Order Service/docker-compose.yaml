@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  payment-service:
+    image: cp-order-service
+    container_name: cp-order-service
+    ports:
+      - "${SERVER_PORT}:8081"
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+      - KEYCLOAK_URL=${KEYCLOAK_URL}
