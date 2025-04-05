@@ -17,7 +17,7 @@ public class KeycloakTokenService {
     private static final String CLIENT_SECRET = "OqT8dumRI0E8jVKgdB8LXSQjEZDYu5TN";
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private String servciceAccessToken;
+    private String serviceAccessToken;
     private Instant tokenExpiryTime;
 
 
