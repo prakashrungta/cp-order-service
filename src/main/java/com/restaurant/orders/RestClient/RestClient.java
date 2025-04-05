@@ -1,6 +1,8 @@
 package com.restaurant.orders.RestClient;
 
 import com.restaurant.orders.token.KeycloakTokenService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +19,8 @@ public class RestClient {
         this.keycloakTokenService = keycloakTokenService;
     }
 
+
+    @CircuitBreaker(name = "paymentService", fallbackMethod = "fallbackForPaymentService")
     public String callPaymentService( Long orderId) {
         String accessToken = keycloakTokenService.getServiceAccessToken(); // Get token
 
@@ -34,5 +38,9 @@ public class RestClient {
         ResponseEntity<String> response = restTemplate.exchange(payMentServiceUrl, HttpMethod.POST, request, String.class);
 
         return response.getBody(); // Response from S2
+    }
+
+    public String fallbackForPaymentService(Exception ex) {
+        return "Payment service is currently unavailable. Please try later.";
     }
 }
