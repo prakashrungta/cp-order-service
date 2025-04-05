@@ -34,3 +34,4 @@ ENV KEYCLOAK_HOST=127.0.0.1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
+

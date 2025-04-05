@@ -1,5 +1,6 @@
 package com.restaurant.orders.controllers;
 
+import com.restaurant.orders.RestClient.RestClient;
 import com.restaurant.orders.entities.Order;
 import com.restaurant.orders.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,10 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+
+    @Autowired
+    private RestClient restClient;
+
 
     /**
      * Constructor for OrderController.
@@ -46,7 +51,9 @@ public class OrderController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public Order createOrder(@Valid  @RequestBody Order order) {
-        return orderService.saveOrder(order);
+        Order createdOrder =orderService.saveOrder(order);
+       restClient.callPaymentService(createdOrder.getId());
+       return  createdOrder;
     }
 
     /**
