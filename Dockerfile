@@ -1,41 +1,37 @@
-# ====== Stage 1: Build Stage ======
-FROM eclipse-temurin:21-jdk AS builder
-LABEL maintainer="prakash.rungta@gmail.com"
+# Stage 1: Build the application
+FROM maven:3.8.6-eclipse-temurin-17 AS build
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy Maven Wrapper & POM first to leverage caching
-COPY ./mvnw ./pom.xml ./
-COPY .mvn .mvn
+# Copy the pom.xml and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Download dependencies separately to optimize caching
-RUN ./mvnw dependency:go-offline -B
+# Copy the source code and build the application
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy source code & build the application
-COPY ./src src
-RUN ./mvnw clean package -DskipTests
+# Stage 2: Create the runtime image
+FROM openjdk:17-jdk-slim
 
-# ====== Stage 2: Minimal Runtime Image ======
-FROM eclipse-temurin:21-jre
-LABEL maintainer="prakash.rungta@gmail.com"
-
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Use non-root user for security
-RUN useradd -m springuser
-USER springuser
+# Copy the built jar file from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Copy only the built JAR from the builder stage
-COPY --from=builder /app/target/cp-order-service-0.0.1.jar cp-order-service.jar
+# Expose the application port
+EXPOSE 80
 
-# Expose port
-EXPOSE 8080
+# Set environment variables (can be overridden at runtime)
+ENV DB_HOST=127.0.0.1
+ENV DB_PORT=5432
+ENV DB_NAME=testdb
+ENV DB_USER=postgres
+ENV DB_PASSWORD=''
+ENV KEYCLOAK_HOST=127.0.0.1
 
-## Define health check (requires Spring Boot Actuator)
-#HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
-#  CMD curl -f http://localhost:8080/actuator/health || exit 1
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
-# JVM Performance Optimizations
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "cp-order-service.jar"]
