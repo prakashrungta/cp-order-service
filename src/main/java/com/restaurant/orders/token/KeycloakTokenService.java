@@ -41,10 +41,10 @@ public class KeycloakTokenService {
 
         if (response.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> body = response.getBody();
-            this.servciceAccessToken = (String) body.get("access_token");
+            this.serviceAccessToken = (String) body.get("access_token");
             int expiresIn = (Integer) body.get("expires_in");
             this.tokenExpiryTime = Instant.now().plusSeconds(expiresIn);
-            System.out.println("expiresIn " + expiresIn + "\n" +" Token : "+servciceAccessToken);
+            System.out.println("expiresIn " + expiresIn + "\n" +" Token : "+serviceAccessToken);
         } else {
             throw new RuntimeException("Failed to obtain token from Keycloak");
         }
