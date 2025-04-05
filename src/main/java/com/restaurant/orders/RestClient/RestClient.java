@@ -40,7 +40,7 @@ public class RestClient {
         return response.getBody(); // Response from S2
     }
 
-    public String fallbackForPaymentService(Exception ex) {
+    public String fallbackForPaymentService(Long orderId ,Exception ex) {
         return "Payment service is currently unavailable. Please try later.";
     }
 }
