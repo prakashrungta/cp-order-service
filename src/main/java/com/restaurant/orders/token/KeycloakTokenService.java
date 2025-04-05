@@ -62,6 +62,6 @@ public class KeycloakTokenService {
         if (Instant.now().isAfter(tokenExpiryTime.minusSeconds(30))) {
             requestNewToken();
         }
-        return servciceAccessToken;
+        return serviceAccessToken;
     }
 }
