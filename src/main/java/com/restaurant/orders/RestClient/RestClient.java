@@ -24,7 +24,7 @@ public class RestClient {
     public String callPaymentService( Long orderId) {
         String accessToken = keycloakTokenService.getServiceAccessToken(); // Get token
 
-       ; // Replace with actual order ID
+       // Replace with actual order ID
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("amount", "44");
 
