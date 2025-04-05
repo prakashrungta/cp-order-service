@@ -11,7 +11,7 @@ public class TokenRefreshScheduler {
         this.keycloakTokenService = keycloakTokenService;
     }
 
-    @Scheduled(fixedRate = 20 * 60 * 1000 ) // Runs every 15 minutes
+    @Scheduled(fixedRate = 20 * 60 * 1000 ) // Runs every 20 minutes
     public void refreshToken() {
         System.out.println("Scheduler called  after 20 min for Token Refresh");
         keycloakTokenService.refreshServiceAccessToken();
