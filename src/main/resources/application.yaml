@@ -40,13 +40,13 @@ spring:
 
       routes:
         - id: swagger-ui
-          uri: ${SERVER_SCHEME:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}
+          uri: ${SERVER_SSL_ENABLED:true?https:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}
           predicates:
             - Path=/swagger-ui/**, /v3/api-docs/**
           filters:
             - StripPrefix=1
         - id: orders-api
-          uri: ${SERVER_SCHEME:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}  # or whatever your orders service is
+          uri: ${SERVER_SSL_ENABLED:true?https:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}  # or whatever your orders service is
           predicates:
             - Path=/api/v1/orders/**
           filters:

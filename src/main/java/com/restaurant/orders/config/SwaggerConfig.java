@@ -15,14 +15,8 @@ import org.springframework.context.annotation.Configuration;
 
 public class SwaggerConfig {
 
-    @Value("${SERVER_SCHEME:http}")
-    private String serverScheme;
-
-    @Value("${SERVER_NAME:localhost}")
-    private String serverName;
-
-    @Value("${SERVER_PORT:8081}")
-    private String serverPort;
+    @Value("${SWAGGER_URL:http://localhost/8081}")
+    private String swaggerURL;
 
     @Bean
     public GroupedOpenApi publicApi() {
@@ -34,7 +28,7 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        String serverUrl = String.format("%s://%s:%s", serverScheme, serverName, serverPort);
+        String serverUrl = String.format("%s", swaggerURL);
 
         return new OpenAPI()
                 .addServersItem(new Server().url(serverUrl))
