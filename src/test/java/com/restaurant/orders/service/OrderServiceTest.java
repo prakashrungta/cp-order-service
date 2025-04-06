@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,14 +35,15 @@ class OrderServiceTest {
         // Arrange
         Order order1 = new Order();
         Order order2 = new Order();
-        List<Order> orders = Arrays.asList(order1, order2);
+        Flux<Order> orders = Flux.just(order1, order2);
         when(orderRepository.findAll()).thenReturn(orders);
 
         // Act
-        List<Order> result = orderService.getAllOrders();
+        Flux<Order> result = orderService.getAllOrders();
 
         // Assert
-        assertEquals(2, result.size());
+        List<Order> resultList = result.collectList().block();
+        assertEquals(2, resultList.size());
         verify(orderRepository, times(1)).findAll();
     }
 
@@ -48,10 +51,10 @@ class OrderServiceTest {
     void testSaveOrder() {
         // Arrange
         Order order = new Order();
-        when(orderRepository.save(any(Order.class))).thenReturn(order);
+        when(orderRepository.save(any(Order.class))).thenReturn(Mono.just(order));
 
         // Act
-        Order result = orderService.saveOrder(order);
+        Mono<Order> result = orderService.saveOrder(order);
 
         // Assert
         assertEquals(order, result);

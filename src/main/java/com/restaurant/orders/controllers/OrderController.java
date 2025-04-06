@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class OrderController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public Order createOrder(@Valid  @RequestBody Order order) {
+    public Mono<Order> createOrder(@Valid  @RequestBody Order order) {
         return orderService.saveOrder(order);
     }
 
@@ -63,7 +65,7 @@ public class OrderController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public List<Order> getOrders() {
+    public Flux<Order> getOrders() {
         return orderService.getAllOrders();
     }
 }

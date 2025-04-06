@@ -32,3 +32,7 @@ To prevent this, the project POM contains empty overrides for these elements.
 If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
 
 https://github.com/Pask423/keycloak-springboot/tree/master/base-integration-spring-boot-3
+
+Generate a self signed certificate
+```bash
+keytool -genkeypair -alias my-ssl-cert -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore keystore.p12 -validity 3650

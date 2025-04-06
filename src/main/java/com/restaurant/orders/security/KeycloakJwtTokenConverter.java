@@ -32,7 +32,7 @@ public class KeycloakJwtTokenConverter implements Converter<Jwt, Collection<Gran
         Collection<GrantedAuthority> authorities = defaultGrantedAuthoritiesConverter.convert(jwt);
 
         // Extract roles from realm_access claim
-        List<String> realmRoles = jwt.getClaimAsStringList("realm_access.roles");
+        List<String> realmRoles = (List<String>) jwt.getClaim("realm_access.roles");
         if (realmRoles != null) {
             authorities.addAll(realmRoles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))

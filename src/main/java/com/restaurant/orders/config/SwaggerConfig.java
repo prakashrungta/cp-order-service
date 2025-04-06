@@ -4,6 +4,8 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 
 public class SwaggerConfig {
+
+    @Value("${SERVER_SCHEME:http}")
+    private String serverScheme;
+
+    @Value("${SERVER_NAME:localhost}")
+    private String serverName;
+
+    @Value("${SERVER_PORT:8081}")
+    private String serverPort;
 
     @Bean
     public GroupedOpenApi publicApi() {
@@ -23,7 +34,10 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        String serverUrl = String.format("%s://%s:%s", serverScheme, serverName, serverPort);
+
         return new OpenAPI()
+                .addServersItem(new Server().url(serverUrl))
                 .components(new Components()
                         .addSecuritySchemes("bearer-key",
                                 new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))

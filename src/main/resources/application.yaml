@@ -1,4 +1,7 @@
 spring:
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
   application:
     name: cp-order-service
   flyway:
@@ -7,24 +10,49 @@ spring:
     url: jdbc:postgresql://${DB_HOST:127.0.0.1}:${DB_PORT:5432}/${DB_NAME:testdb}
     user: ${DB_USER:postgres}
     password: ${DB_PASSWORD:test}
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST:127.0.0.1}:${DB_PORT:5432}/${DB_NAME:testdb}
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST:127.0.0.1}:${DB_PORT:5432}/${DB_NAME:testdb}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:test}
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    pool:
+      enabled: true
+      max-size: 20
+      initial-size: 10
   security:
     oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: spring-boot-client
+            client-secret: your-client-secret
+            scope: openid, profile, email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          keycloak:
+            issuer-uri: https://${KEYCLOAK_HOST:127.0.0.1}/realms/spring-boot-realm
       resourceserver:
         jwt:
           issuer-uri: https://${KEYCLOAK_HOST:127.0.0.1}/realms/spring-boot-realm
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  cloud:
+    gateway:
+
+      routes:
+        - id: swagger-ui
+          uri: ${SERVER_SCHEME:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}
+          predicates:
+            - Path=/swagger-ui/**, /v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: orders-api
+          uri: ${SERVER_SCHEME:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}  # or whatever your orders service is
+          predicates:
+            - Path=/api/v1/orders/**
+          filters:
+            - StripPrefix=1
+
+
 token:
   converter:
     resource-id: "spring-boot-client"
@@ -43,4 +71,15 @@ logging:
 #    path: /swagger-ui.html
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
+  http2:
+    enabled: true
+  ssl:
+    key-store: classpath:localhost.p12
+    key-store-password: ${KEYSTOREPASSWORD:changeit}
+    key-store-type: PKCS12
+    key-alias: localhost
+    enabled: ${SERVER_SSL_ENABLED:false}
+
+cors:
+  allowed-origins: https://localhost,https://myotherfrontend.com

@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,7 +48,7 @@ public class OrderControllerTest {
         order.setDescription("this is a test order");
         order.setPrice(0.1);
         // Set the name field
-        when(orderService.saveOrder(any(Order.class))).thenReturn(order);
+        when(orderService.saveOrder(any(Order.class))).thenReturn(Mono.just(order));
 
         mockMvc.perform(post("/api/v1/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +71,7 @@ public class OrderControllerTest {
     public void testGetOrders() throws Exception {
         Order order1 = new Order();
         Order order2 = new Order();
-        List<Order> orders = Arrays.asList(order1, order2);
+        Flux<Order> orders = Flux.just(order1, order2);
         when(orderService.getAllOrders()).thenReturn(orders);
 
         mockMvc.perform(get("/api/v1/orders"))

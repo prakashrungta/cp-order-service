@@ -1,19 +1,17 @@
 package com.restaurant.orders.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * Entity representing an order.
  */
-@Entity(name = "orders")
+@Table(name = "orders")
 @Getter
 @Setter
 @Schema(description = "Entity representing an order")
@@ -23,7 +21,6 @@ public class Order {
      * Unique identifier for the order.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Unique identifier for the order", example = "1", accessMode = Schema.AccessMode.READ_ONLY, hidden = true)
     private Long id;
 

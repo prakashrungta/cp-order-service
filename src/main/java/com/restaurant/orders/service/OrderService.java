@@ -4,6 +4,8 @@ import com.restaurant.orders.entities.Order;
 import com.restaurant.orders.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class OrderService {
      *
      * @return a list of all orders
      */
-    public List<Order> getAllOrders() {
+    public Flux<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
@@ -41,7 +43,7 @@ public class OrderService {
      * @param order the order to save
      * @return the saved order
      */
-    public Order saveOrder(Order order) {
+    public Mono<Order> saveOrder(Order order) {
         return orderRepository.save(order);
     }
 }
