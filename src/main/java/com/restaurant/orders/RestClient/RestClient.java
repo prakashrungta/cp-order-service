@@ -6,12 +6,16 @@ import com.restaurant.orders.token.KeycloakTokenService;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Service
+@Service
 public class RestClient {
+
+    @Value("${payment.service.url}")
+    private String paymentServiceUrl;
+
     private final KeycloakTokenService keycloakTokenService;
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -19,9 +23,9 @@ public class RestClient {
         this.keycloakTokenService = keycloakTokenService;
     }
 
-
     //@CircuitBreaker(name = "paymentService", fallbackMethod = "fallbackForPaymentService")
     public String callPaymentService( Long orderId) {
+        System.out.println("Calling payment service with order ID: " + orderId + "and URL: " + paymentServiceUrl);
         String accessToken = keycloakTokenService.getServiceAccessToken(); // Get token
 
        // Replace with actual order ID
@@ -33,7 +37,7 @@ public class RestClient {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map<String,Object>> request = new HttpEntity<>(requestBody, headers);
-        String payMentServiceUrl = "http://localhost:8082/api/v1/payments/" + orderId ; // Replace with actual URL
+        String payMentServiceUrl = paymentServiceUrl + orderId ; // Replace with actual URL
 
         ResponseEntity<String> response = restTemplate.exchange(payMentServiceUrl, HttpMethod.POST, request, String.class);
 

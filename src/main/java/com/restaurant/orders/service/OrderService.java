@@ -1,7 +1,9 @@
 package com.restaurant.orders.service;
 
+import com.restaurant.orders.RestClient.RestClient;
 import com.restaurant.orders.entities.Order;
 import com.restaurant.orders.repositories.OrderRepository;
+import com.restaurant.orders.token.KeycloakTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -18,14 +20,22 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
+    @Autowired
+    private final RestClient restClient;
+
+    @Autowired
+    private final KeycloakTokenService tokenService;
+
     /**
      * Constructs an OrderService with the specified OrderRepository.
      *
      * @param orderRepository the repository to manage orders
      */
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, RestClient restClient, KeycloakTokenService tokenService) {
         this.orderRepository = orderRepository;
+        this.restClient = restClient;
+        this.tokenService = tokenService;
     }
 
     /**
@@ -44,6 +54,7 @@ public class OrderService {
      * @return the saved order
      */
     public Mono<Order> saveOrder(Order order) {
+        restClient.callPaymentService(order.getId());
         return orderRepository.save(order);
     }
 }

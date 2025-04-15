@@ -1,5 +1,6 @@
 package com.restaurant.orders.token;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,17 @@ import jakarta.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.Map;
 
-//@Service
+@Service
 public class KeycloakTokenService {
 
-    private static final String TOKEN_URL = "http://localhost:8080/realms/spring-boot-realm/protocol/openid-connect/token";
-    private static final String CLIENT_ID = "order-service-client";
-    private static final String CLIENT_SECRET = "OqT8dumRI0E8jVKgdB8LXSQjEZDYu5TN";
+    @Value("${spring.security.oauth2.resourceserver.jwt.token-uri:}")
+    private String tokenUrl;
+
+    @Value("${spring.security.oauth2.client.registration.keycloak.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.keycloak.client-secret}")
+    private String clientSecret;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private String serviceAccessToken;
@@ -23,7 +29,9 @@ public class KeycloakTokenService {
 
     @PostConstruct
     public void init() {
+
     System.out.println("Init method called");
+        System.out.println(tokenUrl + " " + clientId + " " + clientSecret);
         requestNewToken();
     }
 
@@ -33,11 +41,11 @@ public class KeycloakTokenService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         String requestBody = "grant_type=client_credentials" +
-                             "&client_id=" + CLIENT_ID +
-                             "&client_secret=" + CLIENT_SECRET;
+                             "&client_id=" + clientId +
+                             "&client_secret=" + clientSecret;
 
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<Map> response = restTemplate.exchange(TOKEN_URL, HttpMethod.POST, request, Map.class);
+        ResponseEntity<Map> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, Map.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
             Map<String, Object> body = response.getBody();
