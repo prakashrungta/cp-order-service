@@ -20,10 +20,10 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    @Autowired
+
     private final RestClient restClient;
 
-    @Autowired
+
     private final KeycloakTokenService tokenService;
 
     /**
@@ -54,7 +54,9 @@ public class OrderService {
      * @return the saved order
      */
     public Mono<Order> saveOrder(Order order) {
-        restClient.callPaymentService(order.getId());
-        return orderRepository.save(order);
+        return restClient.callPaymentService(order.getId())
+                .doOnSuccess(response -> System.out.println("Payment service called successfully for order ID: " + order.getId()))
+                .then(orderRepository.save(order));
+
     }
 }

@@ -1,0 +1,11 @@
+groups:
+  - name: spring-boot-alerts
+    rules:
+      - alert: order-service-down
+        expr: up{job="spring-boot-app"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Order Service Spring Boot App is down"
+          description: "The Order Service Spring Boot app is not responding to Prometheus scrape requests."

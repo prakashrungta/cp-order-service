@@ -38,7 +38,6 @@ spring:
           token-uri:  ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
   cloud:
     gateway:
-
       routes:
         - id: swagger-ui
           uri: ${SERVER_SSL_ENABLED:true?https:http}://${SERVER_NAME:localhost}:${SERVER_PORT:8081}
@@ -53,6 +52,19 @@ spring:
           filters:
             - StripPrefix=1
 
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentCB:
+        registerHealthIndicator: true
+        slidingWindowSize: 3
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 10
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 1
+payment:
+  service:
+    url: ${PAYMENT_SERVICE_HOST:http://localhost:8082}/api/v1/payments/
 
 token:
   converter:
@@ -85,6 +97,6 @@ server:
 cors:
   allowed-origins: https://localhost,https://myotherfrontend.com
 
-payment:
-  service:
-    url: ${PAYMENT_SERVICE_HOST:http://localhost:8082}/api/v1/payments/
+
+
+

@@ -1,50 +1,56 @@
 package com.restaurant.orders.RestClient;
 
 import com.restaurant.orders.token.KeycloakTokenService;
-
-//import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import java.util.HashMap;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class RestClient {
 
     @Value("${payment.service.url}")
     private String paymentServiceUrl;
 
+
+    @Autowired
     private final KeycloakTokenService keycloakTokenService;
-    private final RestTemplate restTemplate = new RestTemplate();
 
-    public RestClient(KeycloakTokenService keycloakTokenService) {
-        this.keycloakTokenService = keycloakTokenService;
+
+    @Autowired
+    private final WebClient.Builder webClientBuilder;
+
+    @CircuitBreaker(name = "paymentCB", fallbackMethod = "fallbackForPaymentService")
+    public Mono<String> callPaymentService(Long orderId) {
+        System.out.println("Calling payment service with order ID: " + orderId + " and URL: " + paymentServiceUrl);
+
+        String accessToken = keycloakTokenService.getServiceAccessToken();
+
+        Map<String, Object> requestBody = Map.of("amount", "44");
+
+        String fullUrl = paymentServiceUrl + orderId;
+
+        return webClientBuilder.build()
+                .post()
+                .uri(fullUrl)
+                .headers(headers -> {
+                    headers.setBearerAuth(accessToken);
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                })
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(String.class);
     }
 
-    //@CircuitBreaker(name = "paymentService", fallbackMethod = "fallbackForPaymentService")
-    public String callPaymentService( Long orderId) {
-        System.out.println("Calling payment service with order ID: " + orderId + "and URL: " + paymentServiceUrl);
-        String accessToken = keycloakTokenService.getServiceAccessToken(); // Get token
-
-       // Replace with actual order ID
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("amount", "44");
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken); // Add token to request
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Map<String,Object>> request = new HttpEntity<>(requestBody, headers);
-        String payMentServiceUrl = paymentServiceUrl + orderId ; // Replace with actual URL
-
-        ResponseEntity<String> response = restTemplate.exchange(payMentServiceUrl, HttpMethod.POST, request, String.class);
-
-        return response.getBody(); // Response from S2
-    }
-
-    public String fallbackForPaymentService(Long orderId ,Exception ex) {
-        return "Payment service is currently unavailable. Please try later.";
+    // Fallback must match return type and parameter count
+    public Mono<String> fallbackForPaymentService(Long orderId, Throwable ex) {
+        return Mono.just("Payment service is currently unavailable. Please try again later.");
     }
 }

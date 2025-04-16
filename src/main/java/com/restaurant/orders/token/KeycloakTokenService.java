@@ -32,7 +32,13 @@ public class KeycloakTokenService {
 
     System.out.println("Init method called");
         System.out.println(tokenUrl + " " + clientId + " " + clientSecret);
-        requestNewToken();
+
+        try {
+            requestNewToken();
+        } catch (Exception e) {
+            System.out.println("Error occurred while requesting token: " + e.getMessage());
+        }
+
     }
 
 
@@ -44,7 +50,11 @@ public class KeycloakTokenService {
                              "&client_id=" + clientId +
                              "&client_secret=" + clientSecret;
 
+        System.out.println("Request Body: " + requestBody);
+        System.out.println("Token URL: " + tokenUrl);
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
+
+
         ResponseEntity<Map> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, Map.class);
 
         if (response.getStatusCode().is2xxSuccessful()) {
